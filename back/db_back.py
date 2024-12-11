@@ -1,17 +1,18 @@
 import sqlite3
 import sys
 from typing import Tuple
+from config.conf import DB_LINK
 
 def check_db():
     """Check if database is in the catalogue"""
     try:
-        sqlite_con = sqlite3.connect('books.db')
+        sqlite_con = sqlite3.connect(DB_LINK)
         cursor = sqlite_con.cursor()
         print('DB is successfully connected')
         cursor.close()
 
     except sqlite3.Error as error:
-        print('Error w/ sqlite:', error)
+        print(f'Error w/ connecting to the {DB_LINK}:', error)
         sys.exit()
 
     finally:
@@ -24,7 +25,7 @@ check_db()
 
 def get_page_from_db(reader: str, book: str) -> int:
     """Returns page from database. Takes reader & book"""
-    sqlite_con = sqlite3.connect('books.db')
+    sqlite_con = sqlite3.connect(DB_LINK)
     cursor = sqlite_con.cursor()
 
     query = "SELECT Page FROM book WHERE (Reader = ?) AND (Book = ?)"
@@ -41,7 +42,7 @@ def get_page_from_db(reader: str, book: str) -> int:
 
 def update_page_db(reader: str, book: str, page: int):
     """Updates database with new page. Takes reader, book & page"""
-    sqlite_con = sqlite3.connect('books.db')
+    sqlite_con = sqlite3.connect(DB_LINK)
     cursor = sqlite_con.cursor()
 
     query = "UPDATE book SET Page = ? WHERE (Reader = ?) AND (Book = ?)"

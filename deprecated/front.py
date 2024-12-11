@@ -1,5 +1,5 @@
 from config import TEST_BOT_TOKEN, REAL_BOT_TOKEN, BOOK_LIST, ADMIN_DICT
-from back import get_page_from_db, update_page_db
+from back.db_back import get_page_from_db, update_page_db
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.dispatcher.filters import Text
@@ -10,20 +10,6 @@ import json
 from nltk import tokenize
 from googletrans import Translator
 
-
-bot_token = REAL_BOT_TOKEN
-if not bot_token:
-    exit('Error: no token provided')
-if bot_token == TEST_BOT_TOKEN:
-    print('= = = = TEST BOT MODE = = = = ')
-else:
-    print('! ! ! ! ! REAL BOT MODE ! ! ! ! !')
-
-
-bot = Bot(token=bot_token)
-dp = Dispatcher(bot)
-
-dp.middleware.setup(LoggingMiddleware())
 
 Reader = namedtuple('Reader', ['step', 'book', 'page'])
 reader_dict = {}
