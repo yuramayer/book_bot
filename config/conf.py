@@ -9,3 +9,4 @@ ADMINS = str(os.getenv('ADMINS'))
 DB_LINK = str(os.getenv('DB_LINK'))
 
 admins_ids = [int(admin_id) for admin_id in ADMINS.split(',')]
+books = [str(book) for book in BOOKS.split(',')]
