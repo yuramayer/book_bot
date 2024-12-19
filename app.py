@@ -1,10 +1,10 @@
 import asyncio
-from handlers import start
+from handlers import start, dummy
 from bot import bot, dp
 
 
 async def main():
-    dp.include_router(start.start_router)
+    dp.include_routers(start.start_router, dummy.dummy_router)
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
