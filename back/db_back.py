@@ -30,7 +30,6 @@ def get_last_book(reader: str) -> tuple | None:
     cursor = sqlite_con.cursor()
 
     query = "SELECT book FROM current_books WHERE (reader = ?)"
-
     last_book_tpl = cursor.execute(query, (reader,)).fetchone()
 
     cursor.close()
@@ -49,7 +48,6 @@ def update_last_book(reader: str, book: str):
     cursor.execute(query, (reader, book))
 
     query = "INSERT INTO current_books (reader, book) VALUES (?, ?)"
-
     cursor.execute(query, (reader, book))
 
     cursor.close()
@@ -57,31 +55,31 @@ def update_last_book(reader: str, book: str):
     sqlite_con.close()
 
 
-def get_page_from_db(reader: str, book: str) -> int:
+def get_page_from_db(reader: int, book: str) -> int | None:
     """Returns page from database. Takes reader & book"""
     sqlite_con = sqlite3.connect(DB_LINK)
     cursor = sqlite_con.cursor()
 
     query = "SELECT page FROM books_table WHERE (reader = ?) AND (book = ?)"
-
-    res_tuple = cursor.execute(query, (reader, book)).fetchone()
-    page = res_tuple[0]
-
+    page_tpl = cursor.execute(query, (reader, book)).fetchone()
+    
     cursor.close()
     sqlite_con.commit()
     sqlite_con.close()
 
-    return page
+    return page_tpl
 
 
-def update_page_db(reader: str, book: str, page: int):
-    """Updates database with new page. Takes reader, book & page"""
+def update_page_db(reader: int, book: str, new_page: int):
+    """Updates database with new page. Takes reader, book & new page"""
     sqlite_con = sqlite3.connect(DB_LINK)
     cursor = sqlite_con.cursor()
 
-    query = "UPDATE books_table SET page = ? WHERE (reader = ?) AND (book = ?)"
+    query = "DELETE FROM books_table WHERE (reader = ?) AND (book = ?)"
+    cursor.execute(query, (reader, book))
 
-    cursor.execute(query, (page, reader, book))
+    query = "INSERT INTO books_table (reader, book, page) VALUES (?, ?, ?)"
+    cursor.execute(query, (reader, book, new_page))
 
     cursor.close()
     sqlite_con.commit()
