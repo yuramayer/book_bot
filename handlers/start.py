@@ -6,7 +6,8 @@ from config.conf import admins_ids, books
 from keyboards.book_keyboard import get_book_choice
 from keyboards.page_keyboard import change_page
 from back.db_back import get_last_book, update_last_book, get_page_from_db, update_page_db
-from back.cache import BOOK_CACHE, BOOK_DICT, load_book, add_newlines
+from back.cache import BOOK_CACHE, BOOK_DICT, load_book
+from back.bot_back import prettify_text
 
 
 start_router = Router()
@@ -68,7 +69,9 @@ async def prev_page(message: Message):
     
     update_page_db(message.chat.id, book, current_page)
     
-    await message.answer(page_text, reply_markup=change_page())
+    pretty_page_text = prettify_text(current_page, page_text)
+    
+    await message.answer(pretty_page_text, reply_markup=change_page())
 
 
 
@@ -99,9 +102,9 @@ async def next_page(message: Message):
     
     update_page_db(message.chat.id, book, current_page)
     
-    page_text = add_newlines(page_text)
-
-    await message.answer(page_text, reply_markup=change_page())
+    pretty_page_text = prettify_text(current_page, page_text)
+    
+    await message.answer(pretty_page_text, reply_markup=change_page())
 
 
 @start_router.message(F.text.lower() == 'кек')
