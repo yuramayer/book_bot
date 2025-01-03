@@ -1,27 +1,26 @@
 import sqlite3
 import sys
 from typing import Tuple
-from config.conf import DB_LINK
+from config.conf import DB_LINK, admins_ids
+from bot import bot
 
 
-def check_db():
+async def is_checked_db():
     """Check if database is in the catalogue"""
     try:
         sqlite_con = sqlite3.connect(DB_LINK)
         cursor = sqlite_con.cursor()
-        print('DB is successfully connected')
         cursor.close()
 
     except sqlite3.Error as error:
         print(f'Error w/ connecting to the {DB_LINK}:', error)
-        sys.exit()
+        return False
 
     finally:
         if sqlite_con:
             sqlite_con.close()
 
-
-check_db()
+    return True
 
 
 def get_last_book(reader: str) -> tuple | None:

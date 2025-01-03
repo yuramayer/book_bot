@@ -4,7 +4,6 @@ import json
 BOOK_CACHE = {}
 BOOK_DICT = {}
 
-print('ПОДКЛЮЧАЕМ КЭШ!!!!')
 
 
 def load_book(book_title, book_dict):
