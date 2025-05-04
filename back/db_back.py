@@ -1,19 +1,20 @@
 import sqlite3
 import sys
 from typing import Tuple
-from config.conf import DB_LINK, admins_ids
+from config.conf import DB_PATH, admins_ids
 from bot import bot
+import os
 
 
 async def is_checked_db():
     """Check if database is in the catalogue"""
     try:
-        sqlite_con = sqlite3.connect(DB_LINK)
+        sqlite_con = sqlite3.connect(DB_PATH)
         cursor = sqlite_con.cursor()
         cursor.close()
 
     except sqlite3.Error as error:
-        print(f'Error w/ connecting to the {DB_LINK}:', error)
+        print(f'Error w/ connecting to the {DB_PATH}:', error)
         return False
 
     finally:
@@ -25,7 +26,7 @@ async def is_checked_db():
 
 def get_last_book(reader: str) -> tuple | None:
     """Returns user's last book in tuple. If there's no any book - returns None"""
-    sqlite_con = sqlite3.connect(DB_LINK)
+    sqlite_con = sqlite3.connect(DB_PATH)
     cursor = sqlite_con.cursor()
 
     query = "SELECT book FROM current_books WHERE (reader = ?)"
@@ -40,7 +41,7 @@ def get_last_book(reader: str) -> tuple | None:
 
 def update_last_book(reader: str, book: str):
     """Updates user's last book"""
-    sqlite_con = sqlite3.connect(DB_LINK)
+    sqlite_con = sqlite3.connect(DB_PATH)
     cursor = sqlite_con.cursor()
     
     query = "DELETE FROM current_books WHERE (reader = ?) AND (book = ?)"
@@ -56,7 +57,7 @@ def update_last_book(reader: str, book: str):
 
 def get_page_from_db(reader: int, book: str) -> int | None:
     """Returns page from database. Takes reader & book"""
-    sqlite_con = sqlite3.connect(DB_LINK)
+    sqlite_con = sqlite3.connect(DB_PATH)
     cursor = sqlite_con.cursor()
 
     query = "SELECT page FROM books_table WHERE (reader = ?) AND (book = ?)"
@@ -71,7 +72,7 @@ def get_page_from_db(reader: int, book: str) -> int | None:
 
 def update_page_db(reader: int, book: str, new_page: int):
     """Updates database with new page. Takes reader, book & new page"""
-    sqlite_con = sqlite3.connect(DB_LINK)
+    sqlite_con = sqlite3.connect(DB_PATH)
     cursor = sqlite_con.cursor()
 
     query = "DELETE FROM books_table WHERE (reader = ?) AND (book = ?)"
@@ -83,3 +84,14 @@ def update_page_db(reader: int, book: str, new_page: int):
     cursor.close()
     sqlite_con.commit()
     sqlite_con.close()
+
+
+def create_books_database():
+    """Creates the database if it doesn't exist"""
+    
+    if not os.path.exists(DB_PATH):
+        print("The database wasn't found. Create the database...")
+        sqlite_con = sqlite3.connect(DB_PATH)
+        sqlite_con.close()
+    else:
+        print("The database was found")
