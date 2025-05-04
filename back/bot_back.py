@@ -2,6 +2,7 @@ from nltk.tokenize import sent_tokenize
 import openai
 from config.conf import OPENAI_TOKEN
 
+
 def prettify_text(page, text):
     txt = '\n\n'.join(sent_tokenize(text))
     txt += f'\n\n📖 <b>page {page}</b>\n\n'
@@ -16,7 +17,8 @@ def translate_word(word):
         messages= [
             {
                 'role': 'user',
-                'content': f'Переведи фразу на русский: "{word}". При переводе учитывай, что она связана с "Властелином Колец"'
+                'content': f'Переведи фразу на русский: "{word}".\
+                    При переводе учитывай, что она связана с "Властелином Колец"'
             }
         ],
         model='gpt-4o'
