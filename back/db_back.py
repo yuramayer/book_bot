@@ -95,3 +95,58 @@ def create_books_database():
         sqlite_con.close()
     else:
         print("The database was found")
+
+
+def create_books_table():
+    """Creates the table with books if it doesn't exist"""
+
+    sqlite_con = sqlite3.connect(DB_PATH)
+    cursor = sqlite_con.cursor()
+
+    cursor.execute("""
+        SELECT name FROM sqlite_master
+        WHERE type='table' AND name='books_table';
+    """)
+
+    table_exists = cursor.fetchone()
+
+    if table_exists:
+        print("The table 'books_table' was found")
+        return 
+    
+    
+    cursor.execute("""
+        CREATE TABLE 'books_table' (
+            book TEXT,
+            reader INTEGER,
+            page INTEGER
+        );
+    """)
+    print("The table 'books_table' wasn't found and was created succesfully")
+
+
+def create_current_books_table():
+    """Creates the table with current books for readers if it doesn't exist"""
+
+    sqlite_con = sqlite3.connect(DB_PATH)
+    cursor = sqlite_con.cursor()
+
+    cursor.execute("""
+        SELECT name FROM sqlite_master
+        WHERE type='table' AND name='current_books';
+    """)
+
+    table_exists = cursor.fetchone()
+
+    if table_exists:
+        print("The table 'current_books' was found")
+        return
+
+    cursor.execute("""
+        CREATE TABLE current_books (
+            reader INTEGER,
+            book TEXT
+        );
+    """)
+    print("The table 'current_books' wasn't found and was created succesfully")
+    
