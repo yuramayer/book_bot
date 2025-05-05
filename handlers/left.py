@@ -5,7 +5,7 @@ from aiogram.types import Message
 from filters.admin_checker import IsAdmin
 from config.conf import admins_ids
 from back.cache import BOOK_DICT, BOOK_CACHE
-from back.db_back import get_page_from_db, update_page_db
+from back.db_back import get_page_from_db, update_page_db, start_book
 from back.bot_back import prettify_text
 from keyboards.page_keyboard import change_page
 from keyboards.book_keyboard import get_book_choice
@@ -32,6 +32,7 @@ async def prev_page(message: Message):
     current_page_tpl = get_page_from_db(message.chat.id, book)
     if not current_page_tpl:
         await message.answer("You don't have the current page for the book")
+        start_book(book, message.chat.id)
         await message.answer("The book is started for you ☺️")
         return
 

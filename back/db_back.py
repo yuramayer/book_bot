@@ -90,7 +90,8 @@ def create_books_database():
     """Creates the database if it doesn't exist"""
 
     if not os.path.exists(DB_PATH):
-        print("The database wasn't found. Create the database...")
+        os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+        print("The database wasn't found and was created successfully")
         sqlite_con = sqlite3.connect(DB_PATH)
         sqlite_con.close()
     else:
@@ -121,7 +122,11 @@ def create_books_table():
             page INTEGER
         );
     """)
-    print("The table 'books_table' wasn't found and was created succesfully")
+    print("The table 'books_table' wasn't found and was created successfully")
+
+    cursor.close()
+    sqlite_con.commit()
+    sqlite_con.close()
 
 
 def create_current_books_table():
@@ -147,4 +152,26 @@ def create_current_books_table():
             book TEXT
         );
     """)
-    print("The table 'current_books' wasn't found and was created succesfully")
+    print("The table 'current_books' wasn't found \
+          and was created successfully")
+
+    cursor.close()
+    sqlite_con.commit()
+    sqlite_con.close()
+
+
+def start_book(book_name: str, user_id: int):
+    """Creates the book for the user with the page 0"""
+
+    sqlite_con = sqlite3.connect(DB_PATH)
+    cursor = sqlite_con.cursor()
+
+    query = """
+        INSERT INTO books_table
+        VALUES (?, ?, 0)
+    """
+    cursor.execute(query, (book_name, user_id))
+
+    cursor.close()
+    sqlite_con.commit()
+    sqlite_con.close()
