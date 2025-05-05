@@ -1,3 +1,5 @@
+"""Bot translates the phrase with the ChatGPT"""
+
 from aiogram import Router, F
 from aiogram.types import Message
 from filters.admin_checker import IsAdmin
@@ -14,5 +16,6 @@ translation_router.message.filter(
 
 @translation_router.message(F.text)
 async def translate(message: Message):
+    """User sends the phrase, and bot translates it & sends the result"""
     translation = translate_word(message.text)
     await message.answer(translation, reply_markup=change_page())
