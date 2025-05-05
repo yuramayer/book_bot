@@ -1,9 +1,8 @@
+"""Methods for the sqlite database"""
+
 import sqlite3
-import sys
-from typing import Tuple
-from config.conf import DB_PATH, admins_ids
-from bot import bot
 import os
+from config.conf import DB_PATH
 
 
 async def is_checked_db():
@@ -25,7 +24,8 @@ async def is_checked_db():
 
 
 def get_last_book(reader: str) -> tuple | None:
-    """Returns user's last book in tuple. If there's no any book - returns None"""
+    """Returns user's last book in tuple.
+    If there's no any book - returns None"""
     sqlite_con = sqlite3.connect(DB_PATH)
     cursor = sqlite_con.cursor()
 
@@ -43,7 +43,7 @@ def update_last_book(reader: str, book: str):
     """Updates user's last book"""
     sqlite_con = sqlite3.connect(DB_PATH)
     cursor = sqlite_con.cursor()
-    
+
     query = "DELETE FROM current_books WHERE (reader = ?) AND (book = ?)"
     cursor.execute(query, (reader, book))
 
@@ -62,7 +62,7 @@ def get_page_from_db(reader: int, book: str) -> int | None:
 
     query = "SELECT page FROM books_table WHERE (reader = ?) AND (book = ?)"
     page_tpl = cursor.execute(query, (reader, book)).fetchone()
-    
+
     cursor.close()
     sqlite_con.commit()
     sqlite_con.close()
@@ -88,7 +88,7 @@ def update_page_db(reader: int, book: str, new_page: int):
 
 def create_books_database():
     """Creates the database if it doesn't exist"""
-    
+
     if not os.path.exists(DB_PATH):
         print("The database wasn't found. Create the database...")
         sqlite_con = sqlite3.connect(DB_PATH)
@@ -112,9 +112,8 @@ def create_books_table():
 
     if table_exists:
         print("The table 'books_table' was found")
-        return 
-    
-    
+        return
+
     cursor.execute("""
         CREATE TABLE 'books_table' (
             book TEXT,
@@ -149,4 +148,3 @@ def create_current_books_table():
         );
     """)
     print("The table 'current_books' wasn't found and was created succesfully")
-    
