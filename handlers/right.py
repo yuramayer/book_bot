@@ -31,7 +31,8 @@ async def next_page(message: Message):
 
     current_page_tpl = get_page_from_db(message.chat.id, book)
     if not current_page_tpl:
-        await message.answer('Страница не найдена в БД')
+        await message.answer("You don't have the current page for the book")
+        await message.answer("The book is started for you ☺️")
         return
 
     current_page, = current_page_tpl
