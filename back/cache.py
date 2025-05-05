@@ -1,6 +1,6 @@
 """Cache for the bot"""
 
-import json 
+import json
 from config.conf import books
 
 BOOK_CACHE = {}
