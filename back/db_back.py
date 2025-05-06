@@ -129,6 +129,36 @@ def create_books_table():
     sqlite_con.close()
 
 
+def create_book_len_table():
+    """Creates the table with length of the books if it doesn't exist"""
+
+    sqlite_con = sqlite3.connect(DB_PATH)
+    cursor = sqlite_con.cursor()
+
+    cursor.execute("""
+        SELECT name FROM sqlite_master
+        WHERE type='table' AND name='books_length';
+    """)
+
+    table_exists = cursor.fetchone()
+
+    if table_exists:
+        print("The table 'books_length' was found")
+        return
+
+    cursor.execute("""
+        CREATE TABLE books_length(
+            book text,
+            len integer
+        );
+    """)
+    print("The table 'books_length' wasn't found and was created successfully")
+
+    cursor.close()
+    sqlite_con.commit()
+    sqlite_con.close()
+
+
 def create_current_books_table():
     """Creates the table with current books for readers if it doesn't exist"""
 

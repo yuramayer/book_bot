@@ -2,7 +2,7 @@
 
 from bot import bot
 from back.db_back import is_checked_db, create_books_database, \
-    create_books_table, create_current_books_table
+    create_books_table, create_current_books_table, create_book_len_table
 from config.conf import admins_ids
 
 
@@ -15,6 +15,7 @@ async def on_startup():
     create_books_database()
     create_books_table()
     create_current_books_table()
+    create_book_len_table()
 
     if not is_checked_db:
         for admin_id in admins_ids:
