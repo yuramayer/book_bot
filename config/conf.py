@@ -24,6 +24,6 @@ OPENAI_TOKEN = get_checked_env('OPENAI_TOKEN')
 
 
 admins_ids = [int(admin_id) for admin_id in ADMINS.split(',')]
-bks = [str(book) for book in BOOKS.split(';')]
-pths = [str(book_path) for book_path in BOOKS_PATHS.split(';')]
-books = dict(zip(bks, pths))
+book_names = [str(book) for book in BOOKS.split(';')]
+paths_to_books = [str(book_path) for book_path in BOOKS_PATHS.split(';')]
+books = dict(zip(book_names, paths_to_books))
