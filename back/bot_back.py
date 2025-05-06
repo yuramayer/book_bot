@@ -31,3 +31,10 @@ def translate_word(word: str) -> str:
     )
     answer = question.choices[0].message.content
     return answer
+
+
+def is_positive(s: str) -> bool:
+    """Check if string is digit > 0"""
+    if not s.isnumeric():
+        return
+    return int(s) > 0

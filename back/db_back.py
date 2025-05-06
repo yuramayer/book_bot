@@ -175,3 +175,24 @@ def start_book(book_name: str, user_id: int):
     cursor.close()
     sqlite_con.commit()
     sqlite_con.close()
+
+
+def set_new_page(book_name: str, new_page: int, user_id: int):
+    """Set new page for the book in the 'books_table'"""
+
+    sqlite_con = sqlite3.connect(DB_PATH)
+    cursor = sqlite_con.cursor()
+
+    query = """
+        UPDATE books_table
+        SET page = ?
+        WHERE 1=1
+        AND (reader = ?)
+        AND (book = ?)
+        ;
+    """
+    cursor.execute(query, (new_page, user_id, book_name))
+
+    cursor.close()
+    sqlite_con.commit()
+    sqlite_con.close()
