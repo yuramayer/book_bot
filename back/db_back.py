@@ -226,3 +226,24 @@ def set_new_page(book_name: str, new_page: int, user_id: int):
     cursor.close()
     sqlite_con.commit()
     sqlite_con.close()
+
+
+def get_max_page(book_name: str) -> tuple | None:
+    """Get max page from current book"""
+
+    sqlite_con = sqlite3.connect(DB_PATH)
+    cursor = sqlite_con.cursor()
+
+    query = """
+        SELECT len
+        FROM books_length
+        WHERE book=?
+        ;
+    """
+    max_page_tpl = cursor.execute(query, (book_name,)).fetchone()
+
+    cursor.close()
+    sqlite_con.commit()
+    sqlite_con.close()
+
+    return max_page_tpl

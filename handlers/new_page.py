@@ -8,7 +8,7 @@ from filters.admin_checker import IsAdmin
 from config.conf import admins_ids, books
 from keyboards.book_keyboard import get_book_choice
 from states import NewPage
-from back.bot_back import is_positive
+from back.bot_back import is_positive, is_page_in_book
 from back.db_back import set_new_page
 
 
@@ -49,6 +49,13 @@ async def check_and_save_page(message: Message, state: FSMContext):
     users_page = message.text
     if not is_positive(users_page):
         await message.answer('Отправь страницу виде числа')
+        await state.set_state(NewPage.new_page)
+        return
+
+    book = await state.get_value('book')
+
+    if not is_page_in_book(users_page, book):
+        await message.answer('Страница должна быть в рамках книги')
         await state.set_state(NewPage.new_page)
         return
 
