@@ -21,7 +21,9 @@ new_page_router.message.filter(
 @new_page_router.message(Command('new_page'))
 async def cmd_new_page(message: Message, state: FSMContext):
     """User choose book to change the page"""
-    await message.answer('Выбери книгу для смены страницы',
+    msg1 = 'В какой книге поменяем страницу? 🤔'
+    msg2 = 'Выбери книгу с помощью клавиатуры ниже:'
+    await message.answer(f'{msg1}\n\n{msg2}',
                          reply_markup=get_book_choice())
     await state.set_state(NewPage.book)
 
@@ -30,7 +32,8 @@ async def cmd_new_page(message: Message, state: FSMContext):
 async def ask_page(message: Message, state: FSMContext):
     """Bot asks user the page to change"""
     await state.update_data(book=message.text)
-    await message.answer("Отправь новую страницу для книги",
+    msg = "Отправь новую страницу для книги, только цифру"
+    await message.answer(msg,
                          reply_markup=ReplyKeyboardRemove())
     await state.set_state(NewPage.new_page)
 
@@ -38,8 +41,9 @@ async def ask_page(message: Message, state: FSMContext):
 @new_page_router.message(NewPage.book)
 async def wrong_book(message: Message):
     """Bot asks user to send correct book"""
-    await message.answer('Я не знаю такой книги.\n\n\
-                         Пожалуйста, выбери книгу с помощью клавиатуры',
+    msg1 = 'Я не знаю такой книги 😿'
+    msg2 = 'Пожалуйста, выбери книгу с помощью специальной клавиатуры:'
+    await message.answer(f'{msg1}\n\n{msg2}',
                          reply_markup=get_book_choice())
 
 
@@ -48,14 +52,17 @@ async def check_and_save_page(message: Message, state: FSMContext):
     """Bot checks new page for the book & save it to the DB"""
     users_page = message.text
     if not is_positive(users_page):
-        await message.answer('Отправь страницу виде числа')
+        msg = 'Пожалуйста, отправь новую страницу виде числа 🙏🏻'
+        await message.answer(msg)
         await state.set_state(NewPage.new_page)
         return
 
     book = await state.get_value('book')
 
     if not is_page_in_book(users_page, book):
-        await message.answer('Страница должна быть в рамках книги')
+        msg1 = 'В книге нет такой страницы! 😰'
+        msg2 = 'Пожалуйста, отправь нормальную новую страницу в виде числа'
+        await message.answer(f'{msg1}\n\n{msg2}')
         await state.set_state(NewPage.new_page)
         return
 
@@ -66,8 +73,10 @@ async def check_and_save_page(message: Message, state: FSMContext):
     set_new_page(new_page_dict.get('book'), new_page_dict.get('new_page'),
                  message.chat.id)
 
-    await message.answer(f'Готово 👌🏻\n\nНовая страница\
-                         для книги {new_page_dict.get("book")} - \
-                         {new_page_dict.get("new_page")}',
+    bk = new_page_dict.get("book")
+    pg = new_page_dict.get("new_page")
+    msg1 = 'Готово 👌🏻'
+    msg2 = f'Новая страница для книги "{bk}" - {pg}'
+    await message.answer(f'{msg1}\n\n{msg2}',
                          reply_markup=ReplyKeyboardRemove())
     await state.clear()
