@@ -48,14 +48,14 @@ async def check_and_save_page(message: Message, state: FSMContext):
     """Bot checks new page for the book & save it to the DB"""
     users_page = message.text
     if not is_positive(users_page):
-        await message.answer('Отправь новую в виде числа')
+        await message.answer('Отправь страницу виде числа')
         await state.set_state(NewPage.new_page)
         return
 
     await state.update_data(new_page=users_page)
 
     new_page_dict = await state.get_data()
-    print(new_page_dict)
+
     set_new_page(new_page_dict.get('book'), new_page_dict.get('new_page'),
                  message.chat.id)
 
