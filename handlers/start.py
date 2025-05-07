@@ -6,9 +6,9 @@ from aiogram.types import Message
 from filters.admin_checker import IsAdmin
 from config.conf import admins_ids
 from keyboards.book_keyboard import get_book_choice
-from keyboards.page_keyboard import change_page
 from back.db_back import get_last_book
 from back.cache import BOOK_CACHE, BOOK_DICT, load_book
+from back.page_message import create_and_send_page
 
 
 start_router = Router()
@@ -32,4 +32,5 @@ async def cmd_start(message: Message):
     BOOK_CACHE[message.chat.id] = last_book
     load_book(last_book, BOOK_DICT)
     await message.answer(
-        f'У тебя уже есть книга: {last_book}', reply_markup=change_page())
+        f'У тебя уже есть книга: {last_book}')
+    await create_and_send_page(message)

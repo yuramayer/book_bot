@@ -18,5 +18,7 @@ cancel_router.message.filter(
 async def cmd_cancel(message: Message, state: FSMContext):
     """User wants to clear the FSM cache"""
     await state.clear()
-    await message.answer('Операция отменена 🤝',
+    msg1 = 'Операция отменена 🤝'
+    msg2 = 'Нажми <b>/read</b> чтобы вернуться к чтению'
+    await message.answer(f'{msg1}\n\n{msg2}',
                          reply_markup=ReplyKeyboardRemove())
