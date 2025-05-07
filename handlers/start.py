@@ -24,7 +24,8 @@ async def cmd_start(message: Message):
     last_book_tpl = get_last_book(message.chat.id)
 
     if not last_book_tpl:
-        await message.answer('Выбери книгу', reply_markup=get_book_choice())
+        await message.answer('Какую книгу будем читать?',
+                             reply_markup=get_book_choice())
         return
 
     last_book, = last_book_tpl

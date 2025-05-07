@@ -18,4 +18,5 @@ change_book_router.message.filter(
 async def cmd_change_booko(message: Message):
     """User asks bot to change the current book"""
 
-    await message.answer('Выбери книгу', reply_markup=get_book_choice())
+    await message.answer('Выбери книгу для чтения 📘',
+                         reply_markup=get_book_choice())
