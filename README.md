@@ -31,8 +31,8 @@ Any phrase you send will be automatically translated using ChatGPT
     OPENAI_TOKEN=your_openai_api_key
     ADMINS=123456789,987654321              # TG admins, comma-separated
     BOOKS=English Book;Russian Book         # book names, ;-separated
-    BOOKS_PATH=books/en.txt;books/ru.txt    # paths to books, ;-separated
-    DB_PATH=database/books_database.db                 # path to sqlite database
+    BOOKS_PATH=books/en.json;books/ru.json  # paths to books, ;-separated
+    DB_PATH=database/books_database.db      # path to sqlite database
     ```
     - `BOOKS` & `BOOKS_PATH` must match in length and order — each book name maps to its json-file
     - `ADMINS` will receive admin access to bot commands
