@@ -3,6 +3,7 @@
 from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
+from aiogram.fsm.context import FSMContext
 from filters.admin_checker import IsAdmin
 from config.conf import admins_ids
 from keyboards.book_keyboard import get_book_choice
@@ -17,8 +18,9 @@ start_router.message.filter(
 
 
 @start_router.message(Command('start'))
-async def cmd_start(message: Message):
+async def cmd_start(message: Message, state: FSMContext):
     """User starts bot, and bot asks user about the book"""
+    await state.clear()
     last_book_tpl = get_last_book(message.chat.id)
 
     if not last_book_tpl:
