@@ -1,5 +1,7 @@
 """State for the book's page updating"""
 
+# pylint: disable=too-few-public-methods
+
 from aiogram.fsm.state import StatesGroup, State
 
 
