@@ -8,7 +8,6 @@ from config.conf import admins_ids
 from keyboards.book_keyboard import get_book_choice
 from back.db_back import get_last_book
 from back.cache import BOOK_CACHE, BOOK_DICT, load_book
-from back.page_message import create_and_send_page
 
 
 start_router = Router()
@@ -20,7 +19,6 @@ start_router.message.filter(
 @start_router.message(Command('start'))
 async def cmd_start(message: Message):
     """User starts bot, and bot asks user about the book"""
-    await message.answer('Привет!\n\nЗдесь будет бот по чтению 📘')
     last_book_tpl = get_last_book(message.chat.id)
 
     if not last_book_tpl:
@@ -32,5 +30,6 @@ async def cmd_start(message: Message):
     BOOK_CACHE[message.chat.id] = last_book
     load_book(last_book, BOOK_DICT)
     await message.answer(
-        f'У тебя уже есть книга: {last_book}')
-    await create_and_send_page(message)
+        f'У тебя уже есть книга: <b>{last_book}</b>')
+    msg = 'Нажми 👉 <b>/read</b> чтобы вернуться к чтению'
+    await message.answer(msg)

@@ -80,3 +80,4 @@ async def check_and_save_page(message: Message, state: FSMContext):
     await message.answer(f'{msg1}\n\n{msg2}',
                          reply_markup=ReplyKeyboardRemove())
     await state.clear()
+    await message.answer('Нажми <b>/read</b> чтобы вернуться к чтению')
