@@ -17,7 +17,7 @@ async def on_startup():
     create_current_books_table()
     create_book_len_table()
 
-    if not is_checked_db:
+    if not await is_checked_db():
         for admin_id in admins_ids:
             await bot.send_message(admin_id, 'База данных не работает 😢')
         return
