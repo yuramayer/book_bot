@@ -1,4 +1,4 @@
-"""Imports routers for the app-py"""
+"""Imports routers for the app.py"""
 
 # flake8: noqa
 
