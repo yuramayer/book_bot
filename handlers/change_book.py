@@ -16,7 +16,7 @@ change_book_router.message.filter(
 
 
 @change_book_router.message(Command('change_book'))
-async def cmd_change_booko(message: Message, state: FSMContext):
+async def cmd_change_book(message: Message, state: FSMContext):
     """User asks bot to change the current book"""
 
     await state.clear()
