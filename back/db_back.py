@@ -247,3 +247,18 @@ def get_max_page(book_name: str) -> tuple | None:
     sqlite_con.close()
 
     return max_page_tpl
+
+
+def get_books_with_len() -> set:
+    """Gets all the books from table 'books_length'"""
+
+    sqlite_con = sqlite3.connect(DB_PATH)
+    cursor = sqlite_con.cursor()
+
+    query = "SELECT book FROM books_length;"
+
+    cursor.execute(query)
+
+    existing_books = set(row[0] for row in cursor.fetchall())
+
+    return existing_books
