@@ -12,7 +12,8 @@ async def create_and_send_page(message: Message, _type=None):
     """Gets page and sends it to the user"""
     book = BOOK_CACHE.get(message.chat.id)
     if not book:
-        await message.answer('Выбери книгу', reply_markup=get_book_choice())
+        await message.answer('Какую книгу будем читать? 📘',
+                             reply_markup=get_book_choice())
         return
 
     loaded_book = BOOK_DICT.get(
@@ -38,7 +39,7 @@ async def create_and_send_page(message: Message, _type=None):
 
     page_text = loaded_book.get(current_page)
     if not page_text:
-        await message.answer('Такой страницы в книге нет')
+        await message.answer('Такой страницы в книге нет 🥺')
         return
 
     update_page_db(message.chat.id, book, current_page)
